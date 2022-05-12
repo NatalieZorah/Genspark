@@ -85,7 +85,11 @@ public class guessTheNumber {
     }
 
     public static String checkNumber() {
-        if (myGuess > correctAnswer) {
+        if (myGuess > 20) {
+            return "Your guess is WAY too high there, hun. I said between 1 and 20, not all real numbers.\nGo ahead and guess again, but keep that in mind, okay?";
+        }else if (myGuess < 1) {
+            return "Your guess is far too low, darlin'. I'm looking for numbers between 1 and 20.\nGo ahead and guess again, this'll still count, but try to keep to the range please.";
+        }else if (myGuess > correctAnswer) {
             return "Your guess is too high.\n";
         }else if (myGuess < correctAnswer) {
             return "Your guess is too low.\n";
