@@ -10,13 +10,9 @@ class CavesTest {
 
     @Test
     void isNumber() {
-        assertTrue(Caves.isNumber(String.valueOf(54)),"Method [isNumber] works.");
+        assertTrue(cave.isNumber(String.valueOf(54)),"Method [isNumber] works.");
     }
 
-    @Test
-    void sysInput() {
-        assertEquals(1,Caves.sysInput(),"Method [sysInput] works.");
-    }
 
     @AfterEach
     void tearDown() {
