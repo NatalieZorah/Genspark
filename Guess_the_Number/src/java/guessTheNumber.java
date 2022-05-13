@@ -1,7 +1,5 @@
 import java.util.*;
 
-
-
 public class guessTheNumber {
     // declaration of the variables used within the game
     static boolean canPlay = false;
