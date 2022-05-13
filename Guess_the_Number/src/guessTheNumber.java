@@ -39,7 +39,7 @@ public class guessTheNumber {
             }else if (tblContains(noTbl,checkVal)) {
                 System.out.println(
                         "Aww, very well then, I will just find someone else to play with.\n"+
-                                "Nonetheless, I hope you enjoy your day!");
+                                "Nevertheless, I hope you enjoy your day!");
                 return false;
             }
         }
@@ -51,7 +51,12 @@ public class guessTheNumber {
 
         if (kind.equals("string")) {
             String input = scan.nextLine();
-            return input;
+            if (input.length() > 0){
+                return input;
+            }else {
+                System.out.println("Shy then, are we? 'Enigma' it is then!");
+                return "Enigma";
+            }
         }
         else if (kind.equals("num")) {
             while (true){
