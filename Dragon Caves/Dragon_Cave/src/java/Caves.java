@@ -1,4 +1,3 @@
-package Dragons_Den;
 import java.util.*;
 
 public class Caves {
