@@ -4,7 +4,6 @@ import java.util.*;
 public class HangmanInterface {
     public static String BraceBar = "<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>";
     public static String BarGap = " |=|                                       |=| ";
-    public static String BarGaps = BarGap + "\n" + BarGap;
     public static String NooseArm = " |=|        [=][=][=][=][=][=][=]{|}       |=| " + "\n" +
                             " |=|        [=]         {|}      {|}       |=| " + "\n" +
                             " |=|         V            {|}    {|}       |=| " + "\n" +
@@ -88,13 +87,13 @@ public class HangmanInterface {
         }
 
         System.out.println(BraceBar);
-        System.out.println(BarGaps);
+        System.out.println(BarGap);
         System.out.println(NooseArm);
         System.out.println(line1);
         System.out.println(line2);
         System.out.println(line3);
         System.out.println(NooseBase);
-        System.out.println(BarGaps);
+        System.out.println(BarGap);
         System.out.println(BraceBar);
     }
 
