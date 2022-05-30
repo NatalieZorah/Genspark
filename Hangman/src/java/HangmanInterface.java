@@ -1,10 +1,10 @@
 import java.util.*;
 
 
-public class hangmanInterface {
+public class HangmanInterface {
     public static String BraceBar = "<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>-<<0>>";
-    public static String BarGaps = " |=|                                       |=| " + "\n" +
-                                   " |=|                                       |=| ";
+    public static String BarGap = " |=|                                       |=| ";
+    public static String BarGaps = BarGap + "\n" + BarGap;
     public static String NooseArm = " |=|        [=][=][=][=][=][=][=]{|}       |=| " + "\n" +
                             " |=|        [=]         {|}      {|}       |=| " + "\n" +
                             " |=|         V            {|}    {|}       |=| " + "\n" +
@@ -152,6 +152,27 @@ public class hangmanInterface {
                 }
             }
         }
+        String guessOutput = "";
+        for (char guess:foundLetters) {
+            if (guess == foundLetters.get(foundLetters.size() - 1)) {
+                guessOutput += guess;
+            } else {
+                guessOutput += guess + ",";
+            }
+        }
+
+        int guessGapL = (38-guessOutput.length())/2;
+        int guessGapR = 0;
+        if (guessOutput.length()%2 == 0) {
+            guessGapR = ((38-guessOutput.length())/2);
+        }else {
+            guessGapR = (37-guessOutput.length())/2;
+        }
+        guessOutput = String.format(" |=| %s%s%s |=| ",
+                spacer.repeat(guessGapL),
+                guessOutput,
+                spacer.repeat(guessGapR)
+                );
 
         String wordOutput = String.format(" |=| %s%s%s |=| ",   // the string formatting for the word line
                 spacer.repeat(wordGapL),                        // the first and third %s are for the spacer we established
@@ -159,9 +180,12 @@ public class hangmanInterface {
                 spacer.repeat(wordGapR)
                 );
 
-        System.out.println(BarGaps);                            // print out a gap
+        wordOutput += "\n" + " |=|             -- GUESSES --             |=| ";
+
+        System.out.println(BarGap);                             // print out a gap
         System.out.println(wordOutput);                         // print out the constructed word line
-        System.out.println(BarGaps);                            // print out yet one more gap
+        System.out.println(guessOutput);
+        System.out.println(BarGap);                             // print out yet one more gap
         System.out.println(BraceBar);                           // prints the bracing bar for the bottom
     }
 }
