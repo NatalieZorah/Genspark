@@ -156,12 +156,6 @@ public class Hangman {
     }
 
     private static boolean gameLost() {
-       /** for (int i = 0;i < foundLetters.size();i++) {
-            if (!tblContains(Word.toCharArray(),foundLetters.get(i))) {
-                guessCount++;
-            }
-        }*/
-
         if (guessCount > 6) {
             return true;
         } else {
