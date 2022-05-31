@@ -70,25 +70,13 @@ public class Hangman {
     }
 
     private static boolean canPlay() {
-        boolean validInput = false;
-        while (!validInput) {
+        while (true) {
             String input = scan.nextLine();
-            if (tblContains(yesTbl, input) || tblContains(noTbl, input)) {
-                validInput = true;
-                return playCheck(input);
-            } else {
-                System.out.println(
-                        "Sorry, perhaps I was a bit unclear?\n" +
-                                "I don't entirely know what you were trying to suggest, but I don't know what that answer means.\n" +
-                                "'Yes' or 'No' will be sufficient, thanks.");
-            }
-        }
-        return false;
-    }
-
-    private static boolean playCheck(String checkVal) {
-        if (checkVal != null && checkVal.length() > 0) {
-            if (tblContains(yesTbl,checkVal)) {
+            if (tblContains(yesTbl,input)) {
+                foundLetters.clear();
+                guessCount = 0;
+                playAgain = true;
+                Word = "";
                 System.out.println(
                         "Wonderful! Now what difficulty would you like to play at this time?");
                 System.out.println("Easy, up to 6 letters long..." + "\n" +
@@ -96,14 +84,18 @@ public class Hangman {
                         "Hard, between 13 and 18 letters long...");
                 chooseDifficulty();
                 return true;
-            }else if (tblContains(noTbl,checkVal)) {
+            }else if (tblContains(noTbl,input)) {
                 System.out.println(
                         "Aww, very well then, I will just find someone else to play with.\n"+
                                 "Nevertheless, I hope you enjoy your day!");
                 return false;
+            } else {
+                System.out.println(
+                        "Sorry, perhaps I was a bit unclear?\n" +
+                                "I don't entirely know what you were trying to suggest, but I don't know what that answer means.\n" +
+                                "'Yes' or 'No' will be sufficient, thanks.");
             }
         }
-        return false;
     }
 
     private static void getWord(int min,int max) throws IOException {
@@ -164,16 +156,13 @@ public class Hangman {
     }
 
     private static boolean gameLost() {
-        int incorrectGuesses = 0;
-
-        for (char found:foundLetters) {
-            if (!tblContains(Word.toCharArray(),found)) {
-                incorrectGuesses++;
+       /** for (int i = 0;i < foundLetters.size();i++) {
+            if (!tblContains(Word.toCharArray(),foundLetters.get(i))) {
+                guessCount++;
             }
-        }
+        }*/
 
-        guessCount = incorrectGuesses-1;
-        if (incorrectGuesses >= 6) {
+        if (guessCount > 6) {
             return true;
         } else {
             return false;
@@ -181,28 +170,30 @@ public class Hangman {
     }
 
     private static boolean gameWon() {
-        for (char letter:Word.toCharArray()) {
-            if (!tblContains(foundLetters,letter)) {
+        for (int i = 0;i < Word.length();i++) {
+            if (!tblContains(foundLetters, Word.charAt(i))) {
                 return false;
             }
         }
         return true;
     }
 
-    private static char getGuess() {
+    private static void getGuess() {
             String input = scan.nextLine().toUpperCase();
             if (input.length() != 1) {
                 System.out.println("You can only guess one letter at a time, try again.");
             }
             if (isValidGuess(input)) {
-                return input.charAt(0);
+                foundLetters.add(input.charAt(0));
+                if (!tblContains(Word.toCharArray(),input.charAt(0))) {
+                    guessCount++;
+                }
             } else {
                 System.out.println("Your guess has to be a letter, honey, not a number or special character, and certainly not a blank.");
             }
-            return '*';
     }
 
-    private static void resetGame(){
+    private static void resetGame() {
         foundLetters.clear();
         guessCount = 0;
         playAgain = true;
@@ -213,43 +204,46 @@ public class Hangman {
     private static void playGame() {
         HangmanInterface disp = new HangmanInterface();
         if (canPlay) {
-            if (playAgain) {
+            if (playAgain && !gameLost()) {
                 try {
-                    foundLetters.add(getGuess());
+                    getGuess();
+                    disp.DisplayHangman(guessCount);
+                    disp.DisplayGuesses(Word.toCharArray(),foundLetters);
                 } catch (NullPointerException e) {
                 }
-                disp.DisplayHangman(guessCount);
-                disp.DisplayGuesses(Word.toCharArray(),foundLetters);
             }
             while (!gameLost()) {
-                try {
-                    foundLetters.add(getGuess());
-                } catch (NullPointerException e) {
+                if (gameWon()) {
+                    disp.DisplayHangman(guessCount);
+                    disp.DisplayGuesses(Word.toCharArray(), foundLetters);
+                    System.out.println("Woot!! Ya won the game and saved the man! I am sure he is all too happy for that." + "\n" +
+                            "Care to try saving another?");
+
+                    canPlay = canPlay();
+                    if (canPlay) {
+                        resetGame();
+                    } else {
+                        System.exit(0);
+                    }
+                } else if (!gameLost()){
+                    try {
+                        getGuess();
+                        disp.DisplayHangman(guessCount);
+                        disp.DisplayGuesses(Word.toCharArray(),foundLetters);
+                    } catch (NullPointerException e) {
+                    }
                 }
-                disp.DisplayHangman(guessCount);
-                disp.DisplayGuesses(Word.toCharArray(),foundLetters);
             }
             if (gameLost() && !gameWon()) {
                 disp.DisplayHangman(guessCount);
                 disp.DisplayGuesses(Word.toCharArray(),foundLetters);
                 System.out.println("Welp, ya lost, and that poor man is now dead because of you. Tch Tch." + "\n" +
                         "Care to try again?");
+
                 canPlay = canPlay();
                 if (canPlay) {
                     resetGame();
-                }else {
-                    System.exit(0);
-                }
-            }
-            if (gameWon() && !gameLost()) {
-                disp.DisplayHangman(guessCount);
-                disp.DisplayGuesses(Word.toCharArray(),foundLetters);
-                System.out.println("Woot!! Ya won the game and saved the man! I am sure he is all too happy for that." + "\n" +
-                        "Care to try saving another?");
-                canPlay = canPlay();
-                if (canPlay) {
-                    resetGame();
-                }else {
+                } else {
                     System.exit(0);
                 }
             }

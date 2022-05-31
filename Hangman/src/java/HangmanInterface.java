@@ -130,23 +130,17 @@ public class HangmanInterface {
         String spacer = " ";                                    // used in conjunction with String.repeat to build gaps
         String wordLine = "";                                   // declaring the string that will become the printed word
         int wordGapL = (38-(letters.size()*2))/2;               // setting the length of the gaps between the bracing and the word
-        int wordGapR = 0;
-
-        if (letters.size()%2 == 0) {
-            wordGapR = ((38-(letters.size()*2))/2);
-        }else {
-            wordGapR = (37-(letters.size()*2))/2;
-        }
+        int wordGapR = (38-(letters.size()*2))/2;
 
         for (int k = 0; k < letters.size(); k++) {              // for every entry on the letters ArrayList do the following
             if (!letters.get(k)) {                              // if the entry is false then add a "_"
                 wordLine += "_";
-                if (k != letters.size()) {                      // if the entry is not the last on the ArrayList then also
+                if (k != letters.size()-1) {                    // if the entry is not the last on the ArrayList then also
                     wordLine += " ";                            // add a " " to the end
                 }
             }else if (letters.get(k)) {                         // if the entry is true then add the letter
                 wordLine += word[k];
-                if (k != letters.size()) {                      // if the entry is not the last on the ArrayList then also
+                if (k != letters.size()-1) {                    // if the entry is not the last on the ArrayList then also
                     wordLine += " ";                            // add a " " to the end
                 }
             }
@@ -161,12 +155,8 @@ public class HangmanInterface {
         }
 
         int guessGapL = (38-guessOutput.length())/2;
-        int guessGapR = 0;
-        if (guessOutput.length()%2 == 0) {
-            guessGapR = ((38-guessOutput.length())/2);
-        }else {
-            guessGapR = (37-guessOutput.length())/2;
-        }
+        int guessGapR = (38-guessOutput.length())/2;
+
         guessOutput = String.format(" |=| %s%s%s |=| ",
                 spacer.repeat(guessGapL),
                 guessOutput,
