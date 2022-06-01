@@ -1,4 +1,4 @@
-package humanoid;
+package Humanoid;
 
 public class Humanoid {
     static int health;
